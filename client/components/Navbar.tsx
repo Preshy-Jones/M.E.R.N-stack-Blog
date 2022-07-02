@@ -22,47 +22,51 @@ const Navbar: React.FC = () => {
   const [isSmallerThan760] = useMediaQuery("(max-width: 760px)");
 
   return (
-    <Flex>
-      <Box>
-        <Text>Blog</Text>
-      </Box>
-      <Spacer />
-      <Box width="40%">
-        {!isSmallerThan760 ? (
-          <Flex justify="space-around" width="100%">
-            <Text>Home</Text>
-            <Text>Login</Text>
-            <Text>Sign Up</Text>
-            <Text>Dashboard</Text>
-          </Flex>
-        ) : (
-          <Flex justify="end">
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                icon={<FcMenu />}
-                variant="outline"
-                color="red.400"
-              />
-              <MenuList>
-                <Link href="/" passHref>
-                  <MenuItem icon={<FcHome />}>Home</MenuItem>
-                </Link>
-                <Link href="/search" passHref>
-                  <MenuItem icon={<AiOutlineLogin />}>Login</MenuItem>
-                </Link>
-                <Link href="/search?purpose=for-sale" passHref>
-                  <MenuItem icon={<FcAbout />}>Sign Up</MenuItem>
-                </Link>
-                <Link href="/search?purpose=for-rent" passHref>
-                  <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
-                </Link>
-              </MenuList>
-            </Menu>
-          </Flex>
-        )}
-      </Box>
-    </Flex>
+    <Box py="4">
+      <Flex>
+        <Box>
+          <Text>Blog</Text>
+        </Box>
+        <Spacer />
+        <Box width="40%">
+          {!isSmallerThan760 ? (
+            <Flex justify="space-around" width="100%" fontWeight="semibold">
+              <Text>Home</Text>
+              <Link href="/login" passHref>
+                <Text cursor="pointer">Login</Text>
+              </Link>
+              <Text>Sign Up</Text>
+              <Text>Dashboard</Text>
+            </Flex>
+          ) : (
+            <Flex justify="end">
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<FcMenu />}
+                  variant="outline"
+                  color="red.400"
+                />
+                <MenuList>
+                  <Link href="/" passHref>
+                    <MenuItem icon={<FcHome />}>Home</MenuItem>
+                  </Link>
+                  <Link href="/login" passHref>
+                    <MenuItem icon={<AiOutlineLogin />}>Login</MenuItem>
+                  </Link>
+                  <Link href="/signup" passHref>
+                    <MenuItem icon={<FcAbout />}>Sign Up</MenuItem>
+                  </Link>
+                  <Link href="/dashboard" passHref>
+                    <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
+                  </Link>
+                </MenuList>
+              </Menu>
+            </Flex>
+          )}
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 
