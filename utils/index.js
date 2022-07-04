@@ -15,7 +15,7 @@ async function generateJWTToken(payload, secret = process.env.JWT_SECRET) {
         ...payload,
       },
       secret,
-      { expiresIn: "720h" },
+      { expiresIn: "1800s" },
       (err, token) => {
         if (err) {
           reject(err);

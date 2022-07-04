@@ -23,6 +23,19 @@ import {
 } from "formik";
 import blogImage from "../public/blog.jpeg";
 import Link from "next/link";
+import * as Yup from 'yup';
+
+const SignupSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  lastName: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  email: Yup.string().email('Invalid email').required('Required'),
+});
 
 const SignUp: React.FC = () => {
   interface InitialValues {
@@ -44,16 +57,11 @@ const SignUp: React.FC = () => {
   return (
     <Box bg="#DCDFFE">
       <Center bg="#DCDFFE" width="100%" height="100vh">
-        <Grid
-          templateColumns="repeat(2, 1fr)"
-          width="80%"
-          height="80%"
-          bg="#FFF"
-        >
-          <GridItem height="100%" p={10}>
+        <Grid templateColumns="repeat(2, 1fr)" width="80%" height="80%">
+          <GridItem height="100%" p={10} borderLeftRadius="1rem" bg="#FFF">
             <Flex direction="column" justify="center" height="100%">
               <Text fontSize="3xl" fontWeight="bold" mb="5">
-                Login
+                Sign Up
               </Text>
               <Text mb="5" fontWeight="semibold" color="#B9B9B9">
                 Tell your story and share your knowledge with the world
@@ -75,15 +83,31 @@ const SignUp: React.FC = () => {
                   setFieldValue,
                 }) => (
                   <Form>
-                    <pre>{JSON.stringify(values, null, 2)}</pre>
-                    <Box>
-                      <Text>Email</Text>
-                      <Field as={Input} placeholder="Email" name="email" />
+                    {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                    <Box mb={3}>
+                      <Text>Name</Text>
+                      <Field
+                        as={Input}
+                        type="text"
+                        placeholder="Name"
+                        name="name"
+                      />
                     </Box>
-                    <Box my={6}>
+                    <Box mb={3}>
+                      <Text>Email</Text>
+                      <Field
+                        as={Input}
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                      />
+                    </Box>
+                    <Box mb={3}>
                       <Text>Password</Text>
                       <InputGroup size="md">
-                        <Input
+                        <Field
+                          as={Input}
+                          name="password"
                           pr="4.5rem"
                           type={show ? "text" : "password"}
                           placeholder="Enter password"
@@ -95,17 +119,34 @@ const SignUp: React.FC = () => {
                         </InputRightElement>
                       </InputGroup>
                     </Box>
+                    <Box mb={3}>
+                      <Text>Confirm Password</Text>
+                      <InputGroup size="md">
+                        <Field
+                          as={Input}
+                          name="password2"
+                          pr="4.5rem"
+                          type={show ? "text" : "password"}
+                          placeholder="Enter password again"
+                        />
+                        <InputRightElement width="4.5rem">
+                          <Button h="1.75rem" size="sm" onClick={handleClick}>
+                            {show ? "Hide" : "Show"}
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </Box>
                     <Button mt={2} width="100%" bg="#5138EE" color="#FFFF">
-                      {isSubmitting ? <Spinner speed="0.4s" /> : "Login"}
+                      {isSubmitting ? <Spinner speed="0.4s" /> : "Sign Up"}
                     </Button>
                   </Form>
                 )}
               </Formik>
               <Flex alignItems="center" mt="4">
-                <Text mr="4">Not registered yet?</Text>
+                <Text mr="4">Do you already have an account?</Text>
                 <Text color="#5138EE" fontWeight="bold">
-                  <Link href="/signup" passHref>
-                    Create an Account
+                  <Link href="/login" passHref>
+                    Login
                   </Link>
                 </Text>
               </Flex>
@@ -117,6 +158,7 @@ const SignUp: React.FC = () => {
                 src="https://res.cloudinary.com/xxolcare/image/upload/v1656785612/squidgame_bsot2b.jpg"
                 height="80vh"
                 width="40vw"
+                borderRightRadius="1rem"
               />
             </Box>
             {/* <Box

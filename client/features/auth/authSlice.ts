@@ -7,6 +7,7 @@ import { LoginPayload } from "../../types/auth";
 import { STATUS, Status } from "../../types/status";
 import { Constants, ENDPOINTS } from "../../utils/constants";
 import { getStorage, setStorage } from "../../utils/localStorage";
+import authService from "./authService";
 
 const { GET_CURRENT_USER } = ENDPOINTS;
 
@@ -14,23 +15,33 @@ interface AuthState {
   status: Status;
   isAuthenticated: boolean;
   token: string;
+  message: string;
 }
 
 const initialState: AuthState = {
   status: STATUS.IDLE,
   isAuthenticated: false,
   token: "",
+  message: "",
 };
+const BASEURL = "http://localhost:8008";
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (data: LoginPayload) => {
+  async (data: LoginPayload, thunkAPI) => {
     try {
-      const response = await client.post(ENDPOINTS.LOGIN, data);
-      setStorage(Constants.AUTH_TOKEN, response.data.data.token);
-      return response.data;
+      return await authService.login(data);
     } catch (error: any) {
-      throw error;
+      console.log(error);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -74,20 +85,20 @@ export const authSlice = createSlice({
         state.status = STATUS.ERROR;
         state.isAuthenticated = false;
         // console.log(action.payload);
-      })
-      .addCase(updateAuthStatus.pending, (state, action) => {
-        state.status = STATUS.LOADING;
-      })
-      .addCase(updateAuthStatus.fulfilled, (state, action) => {
-        state.status = STATUS.SUCCESS;
-        console.log(action.payload);
-        state.isAuthenticated = true;
-      })
-      .addCase(updateAuthStatus.rejected, (state, action) => {
-        state.status = STATUS.ERROR;
-        state.isAuthenticated = false;
-        console.log(action.payload);
       });
+    // .addCase(updateAuthStatus.pending, (state, action) => {
+    //   state.status = STATUS.LOADING;
+    // })
+    // .addCase(updateAuthStatus.fulfilled, (state, action) => {
+    //   state.status = STATUS.SUCCESS;
+    //   console.log(action.payload);
+    //   state.isAuthenticated = true;
+    // })
+    // .addCase(updateAuthStatus.rejected, (state, action) => {
+    //   state.status = STATUS.ERROR;
+    //   state.isAuthenticated = false;
+    //   console.log(action.payload);
+    // });
   },
 });
 

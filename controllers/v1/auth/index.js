@@ -13,16 +13,16 @@ module.exports.register = async (req, res, next) => {
   try {
     if (!name || !email || !password || !password2) {
       //throw new ServiceError("please fill in all fields");
-      errors.push({ msg: "please fill in all fields" });
+      errors.push({ message: "please fill in all fields" });
     }
     if (password !== password2) {
       //throw new ServiceError("passwords do not match");
-      errors.push({ msg: "passwords do not match" });
+      errors.push({ message: "passwords do not match" });
     }
 
     if (password.length < 6) {
       //throw new ServiceError("password should be at least 6 characters");
-      errors.push({ msg: "password should be at least 6 characters" });
+      errors.push({ message: "password should be at least 6 characters" });
     }
     console.log("hello");
     if (errors.length > 0) {
@@ -30,8 +30,8 @@ module.exports.register = async (req, res, next) => {
     }
     const user = await User.findOne({ email: email });
     if (user) {
-      // errors.push({ msg: "Email is already registered" });
-      throw new ValidationError([{ msg: "Email is already registered" }]);
+      // errors.push({ message: "Email is already registered" });
+      throw new ValidationError([{ message: "Email is already registered" }]);
     } else {
       const newUser = User({
         name,
@@ -75,17 +75,19 @@ module.exports.login = async (req, res, next) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      return res
-        .status(401)
-        .send({ success: false, message: "that email is not registered" });
+      // return res
+      //   .status(401)
+      //   .send({ success: false, message: "that email is not registered" });
+      throw new ValidationError([{ message: "This email is not registered" }]);
     }
     let passwordCorrect = false;
     //match password
 
     if (!bcrypt.compareSync(password, user.password)) {
-      return res
-        .status(401)
-        .send({ success: false, message: "password incorrect " });
+      // return res
+      //   .status(401)
+      //   .send({ success: false, message: "password incorrect " });
+      throw new ValidationError([{ message: "Password incorrect" }]);
     }
 
     const payload = {
@@ -94,14 +96,18 @@ module.exports.login = async (req, res, next) => {
     };
 
     const token = await generateJWTToken(payload);
-    return res.status(401).send({
+    return res.status(200).send({
       success: true,
       message: "Logged in successfully",
+      user: {
+        name: user.name,
+        id: user.id,
+        email: user.email,
+      },
       token: token,
     });
   } catch (error) {
-    console.log(error);
-    throw error;
+    next(error);
   }
 };
 

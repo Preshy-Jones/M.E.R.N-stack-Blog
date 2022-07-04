@@ -35,8 +35,12 @@ const Navbar: React.FC = () => {
               <Link href="/login" passHref>
                 <Text cursor="pointer">Login</Text>
               </Link>
-              <Text>Sign Up</Text>
-              <Text>Dashboard</Text>
+              <Link href="/signup" passHref>
+                <Text>Sign Up</Text>
+              </Link>
+              <Link href="/dashboard" passHref>
+                <Text>Dashboard</Text>
+              </Link>
             </Flex>
           ) : (
             <Flex justify="end">

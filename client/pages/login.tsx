@@ -3,6 +3,10 @@ import {
   Button,
   Center,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
   Grid,
   GridItem,
   Image,
@@ -12,17 +16,20 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-} from "formik";
+import React, { useEffect, useState } from "react";
+import { Formik, Form, Field, useField, FieldProps } from "formik";
 import blogImage from "../public/blog.jpeg";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { loginUser } from "../features/auth/authSlice";
+import * as Yup from "yup";
+import { store } from "../store/store";
+import { STATUS } from "../types/status";
+import { useRouter } from "next/router";
+
+const loginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+});
 
 const Login: React.FC = () => {
   interface InitialValues {
@@ -37,6 +44,37 @@ const Login: React.FC = () => {
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const [input, setInput] = useState("");
+
+  const isError = input === "";
+  const router = useRouter();
+  //LOGIN
+  const dispatch = useAppDispatch();
+
+  const { status, message } = useAppSelector((store) => store.auth);
+  useEffect(() => {
+    if (status === STATUS.ERROR) {
+      console.log("yo");
+    }
+
+    if (status === STATUS.SUCCESS) {
+      console.log("hi");
+      router.push("/dashboard");
+    }
+  }, [status, message]);
+
+  const MyTextField = ({ label, type, ...props }: any) => {
+    const [field, meta] = useField(props);
+    const errorText = meta.error && meta.touched ? meta.error : "";
+    const isError = errorText ? true : false;
+    return (
+      <FormControl isInvalid={isError}>
+        <FormLabel htmlFor="email">{label}</FormLabel>
+        <Field as={Input} placeholder="Email" type={type} {...field} />
+        {errorText && <FormErrorMessage>{errorText}</FormErrorMessage>}
+      </FormControl>
+    );
+  };
   return (
     <Box bg="#DCDFFE">
       <Center bg="#DCDFFE" width="100%" height="100vh">
@@ -57,25 +95,41 @@ const Login: React.FC = () => {
               <Formik
                 initialValues={initialValues}
                 onSubmit={(values, { setSubmitting }) => {
+                  dispatch(loginUser(values));
                   setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
                     setSubmitting(false);
-                  }, 400);
+                  }, 3000);
                 }}
+                validationSchema={loginSchema}
               >
-                {({ values, handleChange, isSubmitting, setFieldValue }) => (
+                {({
+                  values,
+                  handleChange,
+                  isSubmitting,
+                  setFieldValue,
+                  errors,
+                }) => (
                   <Form>
-                    <pre>{JSON.stringify(values, null, 2)}</pre>
-                    <Box>
-                      <Text>Email</Text>
+                    <pre>{JSON.stringify(errors, null, 2)}</pre>
+                    <MyTextField
+                      placeholder="Email"
+                      name="email"
+                      type="email"
+                    />
+                    {/* <FormControl isInvalid={isError}>
+                      <FormLabel htmlFor="email">Email</FormLabel>
+                      
                       <Field
                         as={Input}
                         placeholder="Email"
                         name="email"
                         type="email"
                       />
-                    </Box>
-                    <Box my={6}>
+                      {isError && (
+                        <FormErrorMessage>Email is required.</FormErrorMessage>
+                      )}
+                    </FormControl> */}
+                    <FormControl my={6}>
                       <Text>Password</Text>
                       <InputGroup size="md">
                         <Field
@@ -91,8 +145,17 @@ const Login: React.FC = () => {
                           </Button>
                         </InputRightElement>
                       </InputGroup>
-                    </Box>
-                    <Button mt={2} width="100%" bg="#5138EE" color="#FFFF">
+                    </FormControl>
+                    <Button
+                      type="submit"
+                      mt={2}
+                      width="100%"
+                      bg="#5138EE"
+                      color="#FFFF"
+                      _hover={{
+                        opacity: 0.9,
+                      }}
+                    >
                       {isSubmitting ? <Spinner speed="0.4s" /> : "Login"}
                     </Button>
                   </Form>

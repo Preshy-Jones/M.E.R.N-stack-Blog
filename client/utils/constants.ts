@@ -1,23 +1,18 @@
 export enum Constants {
-    AUTH_TOKEN = 'auth_token'
+  AUTH_TOKEN = "token",
 }
 
 export enum Links {
-    DASHBOARD = '/dashboard',
-    WALLETS = '/dashboard/wallets',
-    TRANSACTIONS = '/dashboard/transactions',
-    ACTIVITIES = '/activities',
-    ANNOUNCEMENT = '/dashboard/announcements',
-    VERIFICATIONS = '/dashboard/verifications',
-    USERS = '/users',
-    SETTINGS = '/dashboard/settings',
+  LOGIN = "/login",
+  REGISTER = "/register",
+  DASHBOARD = "/dashboard",
 }
 
 export enum ENDPOINTS {
-    LOGIN = 'auth/login/admin',
-    GET_CURRENT_USER = 'user/current',
-    GET_WALLET_SUMMARY = 'admin/summary',
-    GET_ALL_TRANSACTIONS = 'transactions',
-    GET_ALL_ANNOUNCEMENTS = 'announcement',
-    GET_PENDING_KYC = 'user/kyc/pending'
+  LOGIN = "/v1/auth/login",
+  REGISTER = "/v1/auth/register",
+  GET_CURRENT_USER = "user/current",
+  GETUSERPOSTS = "/v1/dashboard/posts",
+  HANDLELIKES = "v1/posts/likes/",
+  GETPOSTS = "/v1/posts",
 }
