@@ -7,6 +7,7 @@ import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
 
+
 const Home: NextPage = () => {
   return (
     <div>
@@ -17,8 +18,9 @@ const Home: NextPage = () => {
       </Head>
       <Navbar />
       <Hero />
-      <BlogsSection/>
+      <BlogsSection />
       <Footer />
+
     </div>
   );
 };

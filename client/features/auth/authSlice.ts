@@ -84,6 +84,8 @@ export const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = STATUS.ERROR;
         state.isAuthenticated = false;
+        console.log(action);
+        state.message = action.payload;
         // console.log(action.payload);
       });
     // .addCase(updateAuthStatus.pending, (state, action) => {
@@ -107,5 +109,6 @@ export const authSlice = createSlice({
 export default authSlice.reducer;
 
 export const selectAuthStatus = (state: RootState) => state.auth.status;
+export const selectAuthMessage = (state: RootState) => state.auth.message;
 export const selectIsAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated;

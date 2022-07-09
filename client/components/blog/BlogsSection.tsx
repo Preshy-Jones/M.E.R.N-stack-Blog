@@ -15,7 +15,7 @@ const BlogsSection: React.FC = () => {
           width="75%"
         >
           {bush.map((bus, index) => (
-            <GridItem>
+            <GridItem key={index}>
               <Blog />
             </GridItem>
           ))}

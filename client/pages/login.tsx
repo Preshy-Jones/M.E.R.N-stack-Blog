@@ -26,9 +26,13 @@ import * as Yup from "yup";
 import { store } from "../store/store";
 import { STATUS } from "../types/status";
 import { useRouter } from "next/router";
+import MyTextField from "../components/ui/TextField";
+import { toast } from "react-toastify";
+import { useToast } from "@chakra-ui/react";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const Login: React.FC = () => {
@@ -42,39 +46,41 @@ const Login: React.FC = () => {
     password: "",
   };
 
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
   const [input, setInput] = useState("");
 
   const isError = input === "";
   const router = useRouter();
+  const toast = useToast();
   //LOGIN
   const dispatch = useAppDispatch();
 
   const { status, message } = useAppSelector((store) => store.auth);
   useEffect(() => {
     if (status === STATUS.ERROR) {
-      console.log("yo");
+      toast({
+        title: "An error occured",
+        description: message,
+        position: "top-right",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+      console.log(message);
     }
 
     if (status === STATUS.SUCCESS) {
-      console.log("hi");
+      toast({
+        // title: "An error occured",
+        description: "Logged in Successfully",
+        position: "top-right",
+        status: "success",
+        duration: 6000,
+        isClosable: true,
+      });
       router.push("/dashboard");
     }
   }, [status, message]);
 
-  const MyTextField = ({ label, type, ...props }: any) => {
-    const [field, meta] = useField(props);
-    const errorText = meta.error && meta.touched ? meta.error : "";
-    const isError = errorText ? true : false;
-    return (
-      <FormControl isInvalid={isError}>
-        <FormLabel htmlFor="email">{label}</FormLabel>
-        <Field as={Input} placeholder="Email" type={type} {...field} />
-        {errorText && <FormErrorMessage>{errorText}</FormErrorMessage>}
-      </FormControl>
-    );
-  };
   return (
     <Box bg="#DCDFFE">
       <Center bg="#DCDFFE" width="100%" height="100vh">
@@ -113,38 +119,18 @@ const Login: React.FC = () => {
                     <pre>{JSON.stringify(errors, null, 2)}</pre>
                     <MyTextField
                       placeholder="Email"
+                      label="Email"
                       name="email"
                       type="email"
                     />
-                    {/* <FormControl isInvalid={isError}>
-                      <FormLabel htmlFor="email">Email</FormLabel>
-                      
-                      <Field
-                        as={Input}
-                        placeholder="Email"
-                        name="email"
-                        type="email"
-                      />
-                      {isError && (
-                        <FormErrorMessage>Email is required.</FormErrorMessage>
-                      )}
-                    </FormControl> */}
+
                     <FormControl my={6}>
-                      <Text>Password</Text>
-                      <InputGroup size="md">
-                        <Field
-                          as={Input}
-                          pr="4.5rem"
-                          type={show ? "text" : "password"}
-                          placeholder="Enter password"
-                          name="password"
-                        />
-                        <InputRightElement width="4.5rem">
-                          <Button h="1.75rem" size="sm" onClick={handleClick}>
-                            {show ? "Hide" : "Show"}
-                          </Button>
-                        </InputRightElement>
-                      </InputGroup>
+                      <MyTextField
+                        type="password"
+                        name="password"
+                        label="password"
+                        placeholder="Enter password"
+                      />
                     </FormControl>
                     <Button
                       type="submit"
