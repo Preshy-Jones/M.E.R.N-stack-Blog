@@ -2,6 +2,7 @@ import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import React from "react";
 import Blog from "./Blog";
 
+
 const BlogsSection: React.FC = () => {
   const bush = [3, 3, 3, 3, 3, , 3, 3, 3, 3, 3, 3, 3, 3];
   return (
