@@ -12,7 +12,7 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Formik,
   FormikHelpers,
@@ -25,6 +25,11 @@ import blogImage from "../public/blog.jpeg";
 import Link from "next/link";
 import * as Yup from "yup";
 import MyTextField from "../components/ui/TextField";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { STATUS } from "../types/status";
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { registerUser } from "../features/auth/authSlice";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -53,8 +58,13 @@ const SignUp: React.FC = () => {
     password2: "",
   };
 
+  const dispatch = useAppDispatch();
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const { status, message } = useAppSelector((store) => store.auth);
+  const toast = useToast();
+  const router = useRouter();
+
   return (
     <Box bg="#DCDFFE">
       <Center bg="#DCDFFE" width="100%" height="100vh">
@@ -70,11 +80,36 @@ const SignUp: React.FC = () => {
               <Formik
                 initialValues={initialValues}
                 validationSchema={SignupSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                  }, 400);
+                onSubmit={async (values, { setSubmitting }) => {
+                  const response = await dispatch(registerUser(values));
+                  console.log(response);
+
+                  if (response.error) {
+                    toast({
+                      title: "An error occured",
+                      description: response.payload,
+                      position: "top-right",
+                      status: "error",
+                      duration: 5000,
+                      isClosable: true,
+                    });
+                    console.log(message);
+                  }
+
+                  if (
+                    response.payload.status === "success" &&
+                    !response.error
+                  ) {
+                    toast({
+                      // title: "An error occured",
+                      description: "RegisteredSuccessfully",
+                      position: "top-right",
+                      status: "success",
+                      duration: 6000,
+                      isClosable: true,
+                    });
+                    router.push("/login");
+                  }
                 }}
               >
                 {({
@@ -102,7 +137,7 @@ const SignUp: React.FC = () => {
                     <MyTextField
                       type="password"
                       name="password"
-                      label="password"
+                      label="Password"
                       placeholder="Enter password"
                     />
                     <MyTextField
@@ -111,8 +146,17 @@ const SignUp: React.FC = () => {
                       label="Confirm password"
                       placeholder="Enter password again"
                     />
-                    <Button mt={2} width="100%" bg="#5138EE" color="#FFFF">
-                      {isSubmitting ? <Spinner speed="0.4s" /> : "Sign Up"}
+                    <Button
+                      type="submit"
+                      mt={2}
+                      width="100%"
+                      bg="#5138EE"
+                      color="#FFFF"
+                      _hover={{
+                        opacity: 0.9,
+                      }}
+                    >
+                      {isSubmitting ? <Spinner speed="0.4s" /> : "Signup"}
                     </Button>
                   </Form>
                 )}

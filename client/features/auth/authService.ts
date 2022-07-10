@@ -10,9 +10,9 @@ const register = async (userData: RegisterPayload) => {
     .publicClient()
     .post(ENDPOINTS.REGISTER, userData);
 
-  if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
+  // if (response.data) {
+  //   localStorage.setItem("user", JSON.stringify(response.data));
+  // }
 
   return response.data;
 };

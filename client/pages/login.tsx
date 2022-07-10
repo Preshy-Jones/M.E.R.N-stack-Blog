@@ -27,7 +27,6 @@ import { store } from "../store/store";
 import { STATUS } from "../types/status";
 import { useRouter } from "next/router";
 import MyTextField from "../components/ui/TextField";
-import { toast } from "react-toastify";
 import { useToast } from "@chakra-ui/react";
 
 const loginSchema = Yup.object().shape({
@@ -55,31 +54,31 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { status, message } = useAppSelector((store) => store.auth);
-  useEffect(() => {
-    if (status === STATUS.ERROR) {
-      toast({
-        title: "An error occured",
-        description: message,
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      console.log(message);
-    }
+  // useEffect(() => {
+  //   if (status === STATUS.ERROR) {
+  //     toast({
+  //       title: "An error occured",
+  //       description: message,
+  //       position: "top-right",
+  //       status: "error",
+  //       duration: 9000,
+  //       isClosable: true,
+  //     });
+  //     console.log(message);
+  //   }
 
-    if (status === STATUS.SUCCESS) {
-      toast({
-        // title: "An error occured",
-        description: "Logged in Successfully",
-        position: "top-right",
-        status: "success",
-        duration: 6000,
-        isClosable: true,
-      });
-      router.push("/dashboard");
-    }
-  }, [status, message]);
+  //   if (status === STATUS.SUCCESS) {
+  //     toast({
+  //       // title: "An error occured",
+  //       description: "Logged in Successfully",
+  //       position: "top-right",
+  //       status: "success",
+  //       duration: 6000,
+  //       isClosable: true,
+  //     });
+  //     router.push("/dashboard");
+  //   }
+  // }, [status, message]);
 
   return (
     <Box bg="#DCDFFE">
@@ -100,11 +99,33 @@ const Login: React.FC = () => {
               </Text>
               <Formik
                 initialValues={initialValues}
-                onSubmit={(values, { setSubmitting }) => {
-                  dispatch(loginUser(values));
-                  setTimeout(() => {
-                    setSubmitting(false);
-                  }, 3000);
+                onSubmit={async (values, { setSubmitting }) => {
+                  const response = await dispatch(loginUser(values));
+                  console.log(response);
+
+                  if (response.error) {
+                    toast({
+                      title: "An error occured",
+                      description: response.payload,
+                      position: "top-right",
+                      status: "error",
+                      duration: 9000,
+                      isClosable: true,
+                    });
+                    console.log(message);
+                  }
+
+                  if (response.payload.success && !response.error) {
+                    toast({
+                      // title: "An error occured",
+                      description: "Logged in Successfully",
+                      position: "top-right",
+                      status: "success",
+                      duration: 6000,
+                      isClosable: true,
+                    });
+                    router.push("/dashboard");
+                  }
                 }}
                 validationSchema={loginSchema}
               >
