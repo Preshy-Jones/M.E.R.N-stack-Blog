@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
           <Text>Blog</Text>
         </Box>
         <Spacer />
-        <Box width="40%">
+        <Box width="40%" cursor="pointer">
           {!isSmallerThan760 ? (
             <Flex justify="space-around" width="100%" fontWeight="semibold">
               <Text>Home</Text>

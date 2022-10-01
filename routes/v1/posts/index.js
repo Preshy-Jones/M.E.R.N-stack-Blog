@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/:id", getPost);
 router.post("/", ensureAuthenticated, savePost, savePostAndRedirect("new"));
 router.put("/:id", ensureAuthenticated, editPost, savePostAndRedirect("edit"));
-router.get("/", ensureAuthenticated, getAllPosts);
+router.get("/", getAllPosts);
 router.delete("/:id", ensureAuthenticated, deletePost);
 router.put("/likes/:id", ensureAuthenticated, handleLikes);
 

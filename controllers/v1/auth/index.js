@@ -4,7 +4,13 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../../../models/User");
 const { generateJWTToken } = require("../../../utils");
-const { ServiceError, ValidationError } = require("../../../errors");
+const {
+  ServiceError,
+  ValidationError,
+  ConflictError,
+  AuthenticationError,
+} = require("../../../errors");
+const config = require("../../../config");
 
 module.exports.register = async (req, res, next) => {
   const { name, email, password, password2 } = req.body;
@@ -31,7 +37,7 @@ module.exports.register = async (req, res, next) => {
     const user = await User.findOne({ email: email });
     if (user) {
       // errors.push({ message: "Email is already registered" });
-      throw new ValidationError([{ message: "Email is already registered" }]);
+      throw new ConflictError("Email is already registered");
     } else {
       const newUser = User({
         name,
@@ -55,7 +61,7 @@ module.exports.register = async (req, res, next) => {
             })
 
             .catch((err) => {
-              throw ServiceError(err);
+              throw new ServiceError(err);
               console.log(err);
             });
         })
@@ -95,16 +101,35 @@ module.exports.login = async (req, res, next) => {
       email: user.email,
     };
 
-    const token = await generateJWTToken(payload);
+    const token = await generateJWTToken(
+      payload,
+      process.env.JWT_SECRET,
+      "1800s"
+    );
+    const refreshToken = await generateJWTToken(
+      payload,
+      process.env.REFRESH_TOKEN_SECRET,
+      "2d"
+    );
+    user.refreshToken = refreshToken;
+    const result = await user.save();
+
+    // Creates Secure Cookie with refresh token
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      // secure: true,
+      // sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     return res.status(200).send({
       success: true,
       message: "Logged in successfully",
       user: {
         name: user.name,
-        id: user.id,
+        id: user._id,
         email: user.email,
       },
-      token: token,
+      accessToken: token,
     });
   } catch (error) {
     next(error);
@@ -112,3 +137,40 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.logout = (req, res, next) => {};
+
+module.exports.handleRefreshToken = async (req, res, next) => {
+  try {
+    const cookies = req.cookies;
+    console.log("hello");
+    console.log(cookies);
+    if (!cookies?.jwt) throw new AuthenticationError("No refresh token found");
+
+    const refreshToken = cookies.jwt;
+
+    const foundUser = await User.findOne({ refreshToken }).exec();
+    // console.log(foundUser);
+    if (!foundUser) return res.sendStatus(403); //Forbidden
+    // evaluate jwt
+    //    console.log(process.env.REFRESH_TOKEN_SECRET);
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, decoded) => {
+        console.log(decoded);
+        console.log(foundUser);
+        if (err || foundUser.email !== decoded.email)
+          return res.sendStatus(403);
+        const payload = {
+          id: foundUser._id,
+          email: foundUser.email,
+        };
+        const accessToken = jwt.sign({ ...payload }, process.env.JWT_SECRET, {
+          expiresIn: "20s",
+        });
+        res.json({ accessToken });
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};

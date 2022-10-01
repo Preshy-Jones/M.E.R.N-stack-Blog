@@ -6,20 +6,14 @@ import {
   Grid,
   GridItem,
   Image,
-  Input,
-  InputGroup,
-  InputRightElement,
   Spinner,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import {
   Formik,
-  FormikHelpers,
-  FormikProps,
   Form,
-  Field,
-  FieldProps,
+
 } from "formik";
 import blogImage from "../public/blog.jpeg";
 import Link from "next/link";
@@ -30,6 +24,7 @@ import { STATUS } from "../types/status";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { registerUser } from "../features/auth/authSlice";
+import { signIn } from 'next-auth/client'
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -84,7 +79,7 @@ const SignUp: React.FC = () => {
                   const response = await dispatch(registerUser(values));
                   console.log(response);
 
-                  if (response.error) {
+                  if (response?.error) {
                     toast({
                       title: "An error occured",
                       description: response.payload,

@@ -28,6 +28,7 @@ import { STATUS } from "../types/status";
 import { useRouter } from "next/router";
 import MyTextField from "../components/ui/TextField";
 import { useToast } from "@chakra-ui/react";
+import { signIn } from 'next-auth/react'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -54,31 +55,7 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { status, message } = useAppSelector((store) => store.auth);
-  // useEffect(() => {
-  //   if (status === STATUS.ERROR) {
-  //     toast({
-  //       title: "An error occured",
-  //       description: message,
-  //       position: "top-right",
-  //       status: "error",
-  //       duration: 9000,
-  //       isClosable: true,
-  //     });
-  //     console.log(message);
-  //   }
-
-  //   if (status === STATUS.SUCCESS) {
-  //     toast({
-  //       // title: "An error occured",
-  //       description: "Logged in Successfully",
-  //       position: "top-right",
-  //       status: "success",
-  //       duration: 6000,
-  //       isClosable: true,
-  //     });
-  //     router.push("/dashboard");
-  //   }
-  // }, [status, message]);
+  
 
   return (
     <Box bg="#DCDFFE">

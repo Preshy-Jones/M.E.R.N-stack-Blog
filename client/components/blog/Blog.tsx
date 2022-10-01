@@ -1,17 +1,24 @@
 import { Box, Flex, Grid, Image, Text } from "@chakra-ui/react";
 import React from "react";
+import { Post } from "../../types/blog";
+import moment from "moment";
+import { shortenText } from "../../utils/shortenText";
 
-const Blog: React.FC = () => {
+interface Props {
+  post: Post;
+}
+
+const Blog: React.FC<Props> = ({ post }) => {
   return (
-    <Box>
-      <Grid>
+    <Box width="100%">
+      <Grid width="100%">
         <Image
           src="https://res.cloudinary.com/xxolcare/image/upload/v1656769025/0R7BdnZl_gyeWOKsudAVmI7gNR673V4BIxQM6gwT-FY_it8yqe.png"
-          // width="100%"
-          // height="100%"
+          width="100%"
+          height="300px"
         />
         <Text letterSpacing={2} py={2}>
-          FEBRUARY. 02, 2020
+          {moment(post.createdAt).format("MMMM DD, YYYY")}
         </Text>
         <Flex justify="space-between" px={3} bg="#F2FEFF" py={2} my={3}>
           <Text fontWeight="bold">Tech</Text>
@@ -19,12 +26,10 @@ const Blog: React.FC = () => {
         </Flex>
         <Text fontWeight="extrabold" fontSize="xl">
           {" "}
-          What is a dectralized Application and why should you care?
+          {post.title}
         </Text>
         <Text fontSize="sm" color="#B9B9B9" fontWeight="bold" py={2}>
-          The fastest-growing apps in 2022 If there is one thing there’s no
-          shortage of, it’s apps. Apps stores are bursting at the seams, making
-          it tricky to...
+          {shortenText(post.description)}
         </Text>
       </Grid>
     </Box>

@@ -5,10 +5,10 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "server": "nodemon app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "client": "npm run dev --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "conc": "concurrently \"npm run dev\" \"npm run client\""
   },
   "author": "preshy jones",
   "license": "ISC",
@@ -16,25 +16,30 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "date-fns": "^2.29.3",
     "dompurify": "^2.0.11",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
+    "express-rate-limit": "^6.6.0",
     "express-session": "^1.17.1",
     "jsdom": "^16.2.2",
     "jsonwebtoken": "^8.5.1",
     "marked": "^1.1.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.9.14",
-    "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "path": "^0.12.7",
     "slugify": "^1.4.0",
+    "uuid": "^9.0.0",
     "winston": "^3.8.1"
   },
   "devDependencies": {
-    "concurrently": "^7.2.2"
+    "concurrently": "^7.2.2",
+    "nodemon": "^2.0.20"
   }
 }

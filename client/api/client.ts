@@ -27,6 +27,7 @@ const authClient = () => {
 const publicClient = () => {
   const instance = axios.create({
     baseURL: "http://localhost:8008",
+    withCredentials: true,
   });
 
   instance.interceptors.request.use(

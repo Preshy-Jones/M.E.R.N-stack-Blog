@@ -7,10 +7,15 @@ const passport = require("passport");
 const methodOverride = require("method-override");
 const db = require("./config").mongoURI;
 const cors = require("cors");
+const path = require("path");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const { logger, logEvents } = require("./middlewares/logger");
 
 //passport config
-const dotenv = require("dotenv");
+
 const { errorHandler, notFoundHandler } = require("./middlewares");
+const corsOptions = require("./config/corsOptions");
 
 const port = process.env.PORT || 8008;
 
@@ -18,27 +23,24 @@ const port = process.env.PORT || 8008;
 //     console.log('mongoDB connected')
 // })
 
+dotenv.config({ path: path.join(__dirname, ".env") });
 //body parser
-app.use(express.urlencoded({ extended: false }));
-app.use(cors());
-app.use(express.json());
-app.use(passport.initialize());
 
-dotenv.config();
-mongoose.connect(
-  process.env.DB_CONNECT,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  },
-  () => console.log("connected to mongodb")
-);
+app.use(logger);
+app.use(cors(corsOptions));
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+//middleware for cookies
+app.use(cookieParser());
+
+app.use(passport.initialize());
+require("./middlewares/passport");
+
 //ejs template engine
 app.set("view engine", "ejs");
 
-require("./middlewares/passport");
 //Express session
 
 app.use(
@@ -64,6 +66,16 @@ app.use(express.static("./public"));
 
 app.use(notFoundHandler);
 app.use(errorHandler);
+mongoose.connect(
+  process.env.DB_CONNECT,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  },
+  () => console.log("connected to mongodb")
+);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

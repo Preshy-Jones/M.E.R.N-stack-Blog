@@ -16,3 +16,5 @@ export enum ENDPOINTS {
   HANDLELIKES = "v1/posts/likes/",
   GETPOSTS = "/v1/posts",
 }
+
+

@@ -23,7 +23,7 @@ const login = async (userData: LoginPayload) => {
   console.log(response);
 
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
   }
 
   return response.data;

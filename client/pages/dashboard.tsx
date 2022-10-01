@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../components/layouts";
 
+
 function dashboard() {
   return (
     <Layout>

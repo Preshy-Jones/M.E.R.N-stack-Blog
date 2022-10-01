@@ -1,9 +1,11 @@
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import React from "react";
+import { useAppSelector } from "../../store/hooks";
 import Blog from "./Blog";
 
-
 const BlogsSection: React.FC = () => {
+  const { posts } = useAppSelector((state) => state.blog);
+
   const bush = [3, 3, 3, 3, 3, , 3, 3, 3, 3, 3, 3, 3, 3];
   return (
     <Box>
@@ -15,11 +17,12 @@ const BlogsSection: React.FC = () => {
           rowGap={5}
           width="75%"
         >
-          {bush.map((bus, index) => (
-            <GridItem key={index}>
-              <Blog />
-            </GridItem>
-          ))}
+          {!!posts.length &&
+            posts.map((post, index) => (
+              <GridItem key={index}>
+                <Blog post={post} />
+              </GridItem>
+            ))}
         </Grid>
       </Flex>
     </Box>

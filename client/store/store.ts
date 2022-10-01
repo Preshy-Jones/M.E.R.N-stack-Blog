@@ -5,8 +5,10 @@ import blogReducer from "../features/blog/blogSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    // blog: blogReducer,
+    blog: blogReducer,
   },
+  //  middleware;getDefaultMiddleware => getDefaultMiddleware().concat(),
+  devTools: true,
 });
 
 export type AppDispatch = typeof store.dispatch;

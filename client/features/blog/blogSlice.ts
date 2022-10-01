@@ -1,42 +1,25 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Post } from "../../types/blog";
+import blogService from "./blogService";
 
-export interface CartItemInterface {
-  id: string;
-  title: string;
-  price: number;
-  img: string;
-  amount: number;
-}
-
-export interface CartState {
-  cartItems: CartItemInterface[];
-  amount: number;
-  total: number;
+export interface BlogState {
+  post: Post | null;
+  posts: Post[];
   isLoading: boolean;
 }
 
-const initialState: CartState = {
-  cartItems: [],
-  amount: 4,
-  total: 0,
+const initialState: BlogState = {
+  post: null,
+  posts: [],
   isLoading: true,
 };
 
-const url = "https://course-api.com/react-useReducer-cart-project";
-
-export const getCartItems = createAsyncThunk(
-  "cart/getCartItems",
+export const getPosts = createAsyncThunk(
+  "cart/getPosts",
   async (name, thunkAPI) => {
     try {
-      // console.log(name);
-      // console.log(thunkAPI);
-      // console.log(thunkAPI.getState());
-      // thunkAPI.dispatch(openModal());
-      const resp = await axios(url);
-      console.log(resp);
-
-      return resp.data;
+      return await blogService.fetchPosts();
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
     }
@@ -46,25 +29,24 @@ export const getCartItems = createAsyncThunk(
 const blogSlice = createSlice({
   name: "cart",
   initialState,
-  reducers:{},
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getCartItems.pending, (state) => {
+      .addCase(getPosts.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getCartItems.fulfilled, (state: CartState, action) => {
+      .addCase(getPosts.fulfilled, (state: BlogState, action) => {
         console.log(action);
         state.isLoading = false;
-        state.cartItems = action.payload;
+        state.posts = action.payload.posts;
       })
-      .addCase(getCartItems.rejected, (state: CartState, action) => {
+      .addCase(getPosts.rejected, (state: BlogState, action) => {
         console.log(action);
         state.isLoading = false;
       });
   },
 });
 
-export const {   } =
-  blogSlice.actions;
+// export const {} = blogSlice.actions;
 
 export default blogSlice.reducer;

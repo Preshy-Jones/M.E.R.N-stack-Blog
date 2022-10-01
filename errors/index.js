@@ -17,6 +17,11 @@ class NotFoundError extends GenericError {
     super(message);
   }
 }
+class ConflictError extends GenericError {
+  constructor(message) {
+    super(message);
+  }
+}
 
 class ValidationError extends GenericError {
   constructor(errors = [], message = "") {
@@ -43,5 +48,6 @@ module.exports = {
   NotFoundError,
   ValidationError,
   AuthenticationError,
-  AuthorizationError
+  AuthorizationError,
+  ConflictError,
 };

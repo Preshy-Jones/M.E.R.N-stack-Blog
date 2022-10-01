@@ -9,21 +9,31 @@ import { Constants, ENDPOINTS } from "../../utils/constants";
 import { getStorage, setStorage } from "../../utils/localStorage";
 import authService from "./authService";
 import { useToast } from "@chakra-ui/react";
+import { User } from "../../types/user";
 
 const { GET_CURRENT_USER } = ENDPOINTS;
 
 interface AuthState {
   status: Status;
   isAuthenticated: boolean;
-  token: string;
+  token: string | null;
   message: string;
+  user: any;
 }
 
-const initialState: AuthState = {
+interface LoginSuccessResponse {
+  success: boolean;
+  message: string;
+  user: User;
+  accessToken: string;
+}
+
+export const initialState: AuthState = {
   status: STATUS.IDLE,
   isAuthenticated: false,
   token: "",
   message: "",
+  user: null,
 };
 const BASEURL = "http://localhost:8008";
 
@@ -54,12 +64,8 @@ export const registerUser = createAsyncThunk(
       return await authService.register(data);
     } catch (error: any) {
       console.log(error);
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      const message = error.response.data.message;
+
       console.log(message);
 
       return thunkAPI.rejectWithValue(message);
@@ -71,7 +77,7 @@ export const updateAuthStatus = createAsyncThunk(
   "auth/current",
   async (state) => {
     try {
-      const response = await client.get(GET_CURRENT_USER);
+      const response = await client.publicClient.get(GET_CURRENT_USER);
       return response.data;
     } catch (error) {
       throw error;
@@ -83,6 +89,15 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setCredentials: (state, action) => {
+      const { user, accessToken } = action.payload;
+      state.user = user;
+      state.token = accessToken;
+    },
+    logOut: (state, action) => {
+      state.user = null;
+      state.token = null;
+    },
     // updateAuthStatus(state) {
     //   const token = getStorage(Constants.AUTH_TOKEN);
     //   if (token) {
@@ -98,10 +113,14 @@ export const authSlice = createSlice({
       .addCase(loginUser.pending, (state, action) => {
         state.status = STATUS.LOADING;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.status = STATUS.SUCCESS;
-        state.isAuthenticated = true;
-      })
+      .addCase(
+        loginUser.fulfilled,
+        (state, action: PayloadAction<LoginSuccessResponse>) => {
+          state.status = STATUS.SUCCESS;
+          state.isAuthenticated = true;
+          state.token = action.payload.accessToken;
+        }
+      )
       .addCase(loginUser.rejected, (state, action) => {
         state.status = STATUS.ERROR;
         // console.log(action);
@@ -113,13 +132,16 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.status = STATUS.SUCCESS;
+        console.log(action);
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.status = STATUS.ERROR;
-        console.log(action);
-        state.message = action.payload;
-        // console.log(action.payload);
+        if (action.payload) {
+          state.status = STATUS.ERROR;
+          console.log(action);
+          state.message = action.payload;
+        }
       });
+
     // .addCase(updateAuthStatus.pending, (state, action) => {
     //   state.status = STATUS.LOADING;
     // })
@@ -136,7 +158,7 @@ export const authSlice = createSlice({
   },
 });
 
-// export const { updateAuthStatus } = authSlice.actions;
+export const { setCredentials, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
