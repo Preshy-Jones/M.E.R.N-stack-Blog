@@ -53,9 +53,9 @@ app.use(
     },
   })
 );
-//passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+// //passport middleware
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 //routes
 app.use("/v1", require("./routes/v1/index"));

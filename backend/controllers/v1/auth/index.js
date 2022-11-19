@@ -50,6 +50,7 @@ module.exports.register = async (req, res, next) => {
       bcrypt.genSalt(10, (err, salt) =>
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
+          console.log(hash);
           //set password to hashed password
           newUser.password = hash;
           // res.send(newUser);

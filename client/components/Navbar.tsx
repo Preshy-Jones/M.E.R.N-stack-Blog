@@ -17,9 +17,11 @@ import { FcMenu, FcHome, FcAbout } from "react-icons/fc";
 import { AiOutlineLogin } from "react-icons/ai";
 import { MdDashboard } from "react-icons/md";
 import { useMediaQuery } from "@chakra-ui/react";
+import { useSession, signOut } from "next-auth/react";
 
 const Navbar: React.FC = () => {
   const [isSmallerThan760] = useMediaQuery("(max-width: 760px)");
+  const { data: session, status } = useSession();
 
   return (
     <Box py="4">
@@ -31,16 +33,34 @@ const Navbar: React.FC = () => {
         <Box width="40%" cursor="pointer">
           {!isSmallerThan760 ? (
             <Flex justify="space-around" width="100%" fontWeight="semibold">
-              <Text>Home</Text>
-              <Link href="/login" passHref>
-                <Text cursor="pointer">Login</Text>
+              <Link href="/" passHref>
+                <Text cursor="pointer">Home</Text>
               </Link>
-              <Link href="/signup" passHref>
-                <Text>Sign Up</Text>
-              </Link>
-              <Link href="/dashboard" passHref>
-                <Text>Dashboard</Text>
-              </Link>
+              {status === "unauthenticated" && (
+                <Link href="/login" passHref>
+                  <Text cursor="pointer">Login</Text>
+                </Link>
+              )}
+              {status === "unauthenticated" && (
+                <Link href="/signup" passHref>
+                  <Text>Sign Up</Text>
+                </Link>
+              )}{" "}
+              {status === "authenticated" && (
+                <Link href="/dashboard" passHref>
+                  <Text>Dashboard</Text>
+                </Link>
+              )}
+              {status === "authenticated" && (
+                <Link href="/new-story" passHref>
+                  <Text>New Story</Text>
+                </Link>
+              )}
+              {status === "authenticated" && (
+                <Text cursor="pointer" onClick={() => signOut()}>
+                  SignOut
+                </Text>
+              )}
             </Flex>
           ) : (
             <Flex justify="end">
@@ -61,6 +81,7 @@ const Navbar: React.FC = () => {
                   <Link href="/signup" passHref>
                     <MenuItem icon={<FcAbout />}>Sign Up</MenuItem>
                   </Link>
+
                   <Link href="/dashboard" passHref>
                     <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
                   </Link>

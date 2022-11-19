@@ -1,12 +1,13 @@
 const express = require("express");
 const { AuthorizationError } = require("../../../errors");
 const Post = require("./../../../models/post");
+const moment = require("moment");
+const { faker } = require("@faker-js/faker");
 
 module.exports.getPost = async (req, res) => {
   const post = await Post.findById(req.params.id);
   res.json({ post });
 };
-
 
 module.exports.savePost = async (req, res, next) => {
   req.post = new Post();
@@ -19,6 +20,12 @@ module.exports.editPost = async (req, res, next) => {
 };
 
 module.exports.getAllPosts = async (req, res) => {
+  // let startDate = moment();
+  // let anotherDate = new Date();
+  // const randomName = faker.name.fullName();
+  // let endDate = moment().add(34, "months");
+
+  // res.json({ startDate, anotherDate, endDate, randomName });
   try {
     const posts = await Post.find().sort({
       createdAt: "desc",
@@ -35,7 +42,6 @@ module.exports.getAllPosts = async (req, res) => {
 //   res.status(200).json(posts);
 //   //    res.send(req.user);
 // };
-
 
 module.exports.deletePost = async (req, res) => {
   try {
@@ -92,5 +98,3 @@ function setUser(req, res, next) {
   }
   next();
 }
-
-

@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/:id", getPost);
 router.post("/", ensureAuthenticated, savePost, savePostAndRedirect("new"));
 router.put("/:id", ensureAuthenticated, editPost, savePostAndRedirect("edit"));
-router.get("/", getAllPosts);
+router.get("/", ensureAuthenticated, getAllPosts);
 router.delete("/:id", ensureAuthenticated, deletePost);
 router.put("/likes/:id", ensureAuthenticated, handleLikes);
 
@@ -26,9 +26,9 @@ function savePostAndRedirect(path) {
     post.markdown = req.body.markdown;
     try {
       post = await post.save();
-      res.redirect(`/articles/${post.id}`);
-    } catch (e) {
-      res.render(`articles/${path}`, { post: post });
+      res.json({ posts: posts });
+    } catch (error) {
+      res.json({ error: error });
     }
   };
 }

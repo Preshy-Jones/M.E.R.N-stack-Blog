@@ -6,6 +6,7 @@ export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   session: {
     strategy: "jwt",
+    // maxAge: 10,
   },
   providers: [
     CredentialsProvider({
@@ -42,6 +43,23 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user?.id) {
+        console.log("hello");
+        console.log(user);
+        token.id = user.id;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (token?.id) {
+        session.user.id = token.id;
+        return session;
+      }
+    },
+  },
   pages: {
     signIn: "/login",
   },

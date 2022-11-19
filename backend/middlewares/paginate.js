@@ -33,6 +33,3 @@ module.exports.paginatedResults = (model) => async (req, res, next) => {
   }
 };
 
-// module.exports = {
-//   paginatedResults,
-// };
