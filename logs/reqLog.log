@@ -447,3 +447,9 @@
 20221204	20:11:08	a6ead222-03cf-43d8-9703-2dfbb56cee4e	POST	/v1/auth/login	http://localhost:3000
 20221204	20:31:37	6bcbe981-2120-45a1-a547-444ea35f4050	OPTIONS	/v1/auth/login	http://localhost:3000
 20221204	20:31:37	60cbbf7c-2c82-467c-9365-c23c4e4ee640	POST	/v1/auth/login	http://localhost:3000
+20221205	19:48:14	03582790-d063-44bc-b5f9-4adc35d60fde	GET	/v1/posts	undefined
+20221205	19:48:20	8c8f118a-a237-491c-b09c-35b872b12298	POST	/v1/auth/login	undefined
+20221205	19:48:32	bca1fe39-1874-4a63-891b-3658f01b58ee	GET	/v1/posts	undefined
+20221205	19:51:09	09ac553a-af7a-4dea-bfcd-87816f00e9ae	GET	/v1/posts	undefined
+20221205	19:51:12	0fd43343-2f18-45c0-b9a5-50c036d09f5c	GET	/v1/posts	undefined
+20221205	19:58:06	ac4c343a-803c-4428-9cb9-149c599beca3	GET	/	undefined
