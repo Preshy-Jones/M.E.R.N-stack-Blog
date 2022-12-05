@@ -22,7 +22,7 @@ import { useSession, signOut } from "next-auth/react";
 const Navbar: React.FC = () => {
   const [isSmallerThan760] = useMediaQuery("(max-width: 760px)");
   // const { data: session, status } = useSession();
-  const status = true;
+  const status = "unauthenticated";
 
   return (
     <Box py="4">
