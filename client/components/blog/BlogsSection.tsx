@@ -1,12 +1,12 @@
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
-import React from "react";
-import { useAppSelector } from "../../store/hooks";
-import Blog from "./Blog";
+import { Box, Flex, Grid, GridItem } from '@chakra-ui/react'
+import React from 'react'
+import { useAppSelector } from '../../store/hooks'
+import Blog from './Blog'
 
 const BlogsSection: React.FC = () => {
-  const { posts } = useAppSelector((state) => state.blog);
+  const { posts } = useAppSelector((state) => state.blog)
 
-  const bush = [3, 3, 3, 3, 3, , 3, 3, 3, 3, 3, 3, 3, 3];
+  const bush = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
   return (
     <Box>
       <Flex justify="center">
@@ -26,7 +26,7 @@ const BlogsSection: React.FC = () => {
         </Grid>
       </Flex>
     </Box>
-  );
-};
+  )
+}
 
-export default BlogsSection;
+export default BlogsSection

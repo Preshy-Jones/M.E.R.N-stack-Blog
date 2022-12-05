@@ -77,6 +77,7 @@ export const updateAuthStatus = createAsyncThunk(
   "auth/current",
   async (state) => {
     try {
+      // @ts-ignore
       const response = await client.publicClient.get(GET_CURRENT_USER);
       return response.data;
     } catch (error) {

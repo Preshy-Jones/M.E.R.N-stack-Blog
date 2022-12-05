@@ -18,7 +18,7 @@ import { STATUS } from "../../types/status";
 
 const MyTextField = ({ label, type, placeholder, ...props }: any) => {
   const [field, meta] = useField(props);
-  let errorText = meta.error && meta.touched ? meta.error : "";
+  const errorText = meta.error && meta.touched ? meta.error : "";
   const isError = errorText ? true : false;
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
