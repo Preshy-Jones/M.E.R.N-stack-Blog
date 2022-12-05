@@ -117,7 +117,7 @@ module.exports.login = async (req, res, next) => {
 
     // Creates Secure Cookie with refresh token
     res.cookie("jwt", refreshToken, {
-      httpOnly: true,
+      httpOnly: false,
       // secure: true,
       // sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,

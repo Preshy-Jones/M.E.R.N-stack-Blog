@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import { SessionProvider } from "next-auth/react";
+import { CookiesProvider } from "react-cookie";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -19,12 +20,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
-    <SessionProvider session={pageProps.session}>
+    <CookiesProvider>
       <Provider store={store}>
         <ChakraProvider>
           <Component {...pageProps} />
         </ChakraProvider>
       </Provider>
-    </SessionProvider>
+    </CookiesProvider>
   );
 }

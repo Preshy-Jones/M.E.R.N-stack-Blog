@@ -46,7 +46,7 @@ module.exports.getAllPosts = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (post.userId !== req.user._id.toString()) {
+    if (post.userId.toString() !== req.user._id.toString()) {
       throw AuthorizationError;
     } else {
       await Post.findByIdAndDelete(req.params.id);

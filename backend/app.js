@@ -43,16 +43,16 @@ app.set("view engine", "ejs");
 
 //Express session
 
-app.use(
-  session({
-    secret: "secret",
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 365,
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: "secret",
+//     resave: true,
+//     saveUninitialized: true,
+//     cookie: {
+//       maxAge: 1000 * 60 * 60 * 24 * 365,
+//     },
+//   })
+// );
 // //passport middleware
 // app.use(passport.initialize());
 // app.use(passport.session());
