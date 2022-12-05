@@ -10,7 +10,7 @@ const Hero: React.FC = () => {
             Dev Blogiverse
           </Text>
           <Text fontSize="xl" color="gray.500" fontWeight="bold">
-            The only Dev Blog you'll need in the universe
+            The only Dev Blog you&apos;ll  need in the universe
           </Text>
         </Flex>
       </Center>

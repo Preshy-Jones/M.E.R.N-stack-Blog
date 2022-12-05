@@ -4,7 +4,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import moment from "moment";
 import { useCookies } from "react-cookie";
 
-const dashboard = () => {
+const Dashboard = () => {
   // const { data: session } = useSession();
   const [cookies, setCookie] = useCookies();
 
@@ -39,4 +39,4 @@ const dashboard = () => {
   );
 };
 
-export default dashboard;
+export default Dashboard;

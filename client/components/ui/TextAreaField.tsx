@@ -19,3 +19,5 @@ export const AutoResizeTextarea = React.forwardRef<
     />
   );
 });
+
+AutoResizeTextarea.displayName = "AutoResizeTextarea";
