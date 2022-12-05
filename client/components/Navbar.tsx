@@ -46,22 +46,19 @@ const Navbar: React.FC = () => {
                 <Link href="/signup" passHref>
                   <Text>Sign Up</Text>
                 </Link>
-              )}{" "}
-              {status === "authenticated" && (
-                <Link href="/dashboard" passHref>
-                  <Text>Dashboard</Text>
-                </Link>
               )}
-              {status === "authenticated" && (
-                <Link href="/new-story" passHref>
-                  <Text>New Story</Text>
-                </Link>
-              )}
-              {status === "authenticated" && (
-                <Text cursor="pointer" onClick={() => signOut()}>
-                  SignOut
-                </Text>
-              )}
+
+              <Link href="/dashboard" passHref>
+                <Text>Dashboard</Text>
+              </Link>
+
+              <Link href="/new-story" passHref>
+                <Text>New Story</Text>
+              </Link>
+
+              <Text cursor="pointer" onClick={() => signOut()}>
+                SignOut
+              </Text>
             </Flex>
           ) : (
             <Flex justify="end">
