@@ -1,19 +1,19 @@
-import { Box, Flex } from "@chakra-ui/react";
-import React from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import Layout from "../components/layouts";
-import { Formik, Form } from "formik";
-import { AutoResizeTextarea } from "../components/ui/TextAreaField";
+import { Box, Flex } from '@chakra-ui/react'
+import React from 'react'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
+import Layout from '../components/layouts'
+import { Formik, Form } from 'formik'
+import { AutoResizeTextarea } from '../components/ui/TextAreaField'
 
 const NewStory = () => {
   //create ref with type HTMLTextAreaElement
-  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
-  const textAreaRef2 = React.useRef<HTMLTextAreaElement>(null);
+  const textAreaRef = React.useRef<HTMLTextAreaElement>(null)
+  const textAreaRef2 = React.useRef<HTMLTextAreaElement>(null)
 
   const initialValues = {
-    title: "",
-    content: "",
-  };
+    title: '',
+    content: '',
+  }
   return (
     <Layout>
       <Flex justify="center">
@@ -55,7 +55,7 @@ const NewStory = () => {
         </Flex>
       </Flex>
     </Layout>
-  );
-};
+  )
+}
 
-export default NewStory;
+export default NewStory
