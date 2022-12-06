@@ -19,7 +19,8 @@ const NewStory = () => {
       <Flex justify="center">
         <Flex width="60%">
           <Box width="100%">
-            <Formik initialValues={initialValues}>
+            // @ts-ignore
+            <Formik initialValues={initialValues} onSubmit={() => {}}>
               {({ handleChange, values }) => (
                 <Form>
                   <pre>{JSON.stringify(values, null, 2)}</pre>

@@ -125,6 +125,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = STATUS.ERROR;
         // console.log(action);
+        // @ts-ignore
         state.message = action.payload;
         // console.log(action.payload);
       })
@@ -139,6 +140,7 @@ export const authSlice = createSlice({
         if (action.payload) {
           state.status = STATUS.ERROR;
           console.log(action);
+          // @ts-ignore
           state.message = action.payload;
         }
       });

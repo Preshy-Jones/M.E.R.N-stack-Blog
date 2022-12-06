@@ -102,7 +102,7 @@ const Login: React.FC = () => {
                 onSubmit={async (values, { setSubmitting }) => {
                   const response = await dispatch(loginUser(values));
                   console.log(response);
-
+                  // @ts-ignore
                   if (response.error) {
                     toast({
                       title: "An error occured",
@@ -114,7 +114,7 @@ const Login: React.FC = () => {
                     });
                     console.log(message);
                   }
-
+                  // @ts-ignore
                   if (response.payload.success && !response.error) {
                     toast({
                       // title: "An error occured",

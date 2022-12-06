@@ -1,7 +1,0 @@
-{
-  "build": {
-    "typescript": {
-      "ignoreDevErrors": true
-    }
-  }
-}
