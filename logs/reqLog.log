@@ -456,3 +456,5 @@
 20221205	20:43:20	cccda4a0-6f5a-4ec2-bd09-acdef6fe36c1	GET	/v1/posts	http://localhost:3000
 20221205	20:44:41	10f9a625-3550-4b57-b376-b2e52b33d2f4	OPTIONS	/v1/auth/login	http://localhost:3000
 20221205	20:44:41	25a08660-9a00-4900-ab77-fa3fef8de9c3	POST	/v1/auth/login	http://localhost:3000
+20221206	12:25:38	070a1375-50f3-4213-8c22-1b769ff5f498	OPTIONS	/v1/auth/login	http://localhost:3000
+20221206	12:25:38	fb71afac-d637-42bd-93be-2be839709734	POST	/v1/auth/login	http://localhost:3000

@@ -116,6 +116,14 @@ module.exports.login = async (req, res, next) => {
     const result = await user.save();
 
     // Creates Secure Cookie with refresh token
+    res.cookie("accessToken", token, {
+      httpOnly: false,
+      sameSite : "none",
+      domain: "https://mern-stack-blog-production.up.railway.app",
+      // secure: true,
+      // sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.cookie("jwt", refreshToken, {
       httpOnly: false,
       // secure: true,
