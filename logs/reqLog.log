@@ -458,3 +458,5 @@
 20221205	20:44:41	25a08660-9a00-4900-ab77-fa3fef8de9c3	POST	/v1/auth/login	http://localhost:3000
 20221206	12:25:38	070a1375-50f3-4213-8c22-1b769ff5f498	OPTIONS	/v1/auth/login	http://localhost:3000
 20221206	12:25:38	fb71afac-d637-42bd-93be-2be839709734	POST	/v1/auth/login	http://localhost:3000
+20221208	09:57:58	7e6ecf90-ca03-40f8-9fc8-b05336322fd2	POST	/v1/auth/login	undefined
+20221208	09:59:22	da3415d4-e12c-4f20-9a62-e0a6cd9dc867	POST	/v1/auth/login	undefined
