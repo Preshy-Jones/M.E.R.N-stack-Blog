@@ -118,7 +118,7 @@ module.exports.login = async (req, res, next) => {
     // Creates Secure Cookie with refresh token
     res.cookie("accessToken", token, {
       httpOnly: false,
-      sameSite : "none",
+      sameSite : "None",
       domain: "https://mern-stack-blog-production.up.railway.app",
       // secure: true,
       // sameSite: "None",
@@ -126,6 +126,7 @@ module.exports.login = async (req, res, next) => {
     });
     res.cookie("jwt", refreshToken, {
       httpOnly: false,
+      sameSite : "None",
       // secure: true,
       // sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
