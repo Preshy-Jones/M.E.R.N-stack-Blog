@@ -119,14 +119,14 @@ module.exports.login = async (req, res, next) => {
 
     res.cookie("hello", refreshToken, {
       httpOnly: false,
-      sameSite: "None",
+      // sameSite: "None",
       // secure: true,
       // sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.cookie("accessToken", token, {
       httpOnly: false,
-      sameSite: "None",
+      // sameSite: "None",
       // domain: "https://mern-stack-blog-production.up.railway.app",
       // secure: true,
       // sameSite: "None",
