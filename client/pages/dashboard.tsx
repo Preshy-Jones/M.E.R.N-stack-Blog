@@ -25,10 +25,10 @@ const Dashboard = () => {
   //   return b ? b.pop() : "";
   // }
 
-  // useEffect(() => {
-  //   let value = getCookie("jwt");
-  //   console.log(value);
-  // }, []);
+  useEffect(() => {
+    console.log("cookies", cookies);
+    localStorage.setItem("jwt-token", cookies.accessToken);
+  }, []);
 
   return (
     <div>

@@ -4,7 +4,7 @@ import { getStorage } from "../utils/localStorage";
 
 const authClient = () => {
   const instance = axios.create({
-    baseURL: "https://mern-stack-blog-production.up.railway.app",
+    baseURL: "http://localhost:8008",
   });
 
   instance.interceptors.request.use(
@@ -26,7 +26,7 @@ const authClient = () => {
 
 const publicClient = () => {
   const instance = axios.create({
-    baseURL: "https://mern-stack-blog-production.up.railway.app",
+    baseURL: "http://localhost:8008",
     withCredentials: true,
   });
 
