@@ -19,12 +19,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
-    <SessionProvider session={pageProps.session}>
+   
       <Provider store={store}>
         <ChakraProvider>
           <Component {...pageProps} />
         </ChakraProvider>
       </Provider>
-    </SessionProvider>
+  
   );
 }
