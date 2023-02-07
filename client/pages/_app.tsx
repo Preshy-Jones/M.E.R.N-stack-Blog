@@ -5,7 +5,7 @@ import { store } from "../store/store";
 import { Provider } from "react-redux";
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
-import { SessionProvider } from "next-auth/react";
+
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
